@@ -18,11 +18,11 @@ u32 Read_LTC2400(void)
 	for(i=0;i<32;i++)
 	{
 		LTC_SCK_H; 
-		delay_ms(1);
+			delay_us(2);
 		v <<= 1;
 		if(LTC_SDO) v++;
 		LTC_SCK_L; 
-		delay_ms(1);
+		delay_us(2);
 	}
 	LTC_CS_H;
 	return ((v>>4)&0xffffff);

@@ -13,8 +13,8 @@ int main(void)
 {	
 	u8 dispbuf[32];
 	float Voltage;
-	u32 vv,i;
-	u32 ad[10];
+	u32 vv,i,j,max,min;
+	u32 ad[18];
 	delay_init();
 	LED_Init();
 	GPIOX_Init();
@@ -23,14 +23,28 @@ int main(void)
 	LCD_Init();
 	LCD_CLS();
 //	LCD_P8x16Str(0,0,"  LTC2400 DMV");
-	LED_TURN;	
+	LED_TURN;
+	for(i=0;i<10;i++)
+	{
+		ad[i]=0;
+	}
+	i=0;
+	max=0;min=0;
 	while(1)
 	{
 		LED_TURN;
+		ad[i]=Read_LTC2400();
+		i++;
+		if(i>=10) i=0;
 		vv=0;
-		for(i=0;i<8;i++)
-			vv+=Read_LTC2400();
-		vv>>=3;
+		max=0;min=0xffffffff;
+		for(j=0;j<10;j++)	
+		{
+			vv+=ad[j];
+			if(ad[j]>max) max=ad[j];
+			if(ad[j]<min) min=ad[j];
+		}
+		vv=(vv-max-min)>>3;
 		LED_TURN;
 		Voltage=(float)(vv)*0.0009763875+0.2355;
 		sprintf(dispbuf,"% 10.5fV DC",Voltage/1000.0f);	
@@ -40,6 +54,8 @@ int main(void)
 		//LED_TURN;
 	}	
 }
+
+
 
 void GPIOX_Init(void)
 {

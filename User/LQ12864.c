@@ -13,9 +13,13 @@ void LCD_WrDat(unsigned char dat)
 		if((dat << i) & 0x80)
 		{
 			SDA_H;
+			delay_us(10);
 		}
 		else  
+		{
 			SDA_L;
+				delay_us(10);
+		}
 		SCL_H;
 	}
 }
@@ -30,10 +34,13 @@ void LCD_WrCmd(unsigned char cmd)
 		if((cmd << i) & 0x80)
 		{
 			SDA_H;
+				delay_us(10);
 		}
 		else  
+		{
 			SDA_L;
-		
+				delay_us(10);
+		}
 		SCL_H;
 	}
 }
@@ -160,19 +167,19 @@ void LCD_P16x16Ch(unsigned char x,unsigned char y,unsigned char  N)
 	} 	  	
 }
 /***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
-void Draw_BMP(unsigned char x0,unsigned char y0,unsigned char x1,unsigned char y1,unsigned char BMP[])
-{ 	
-	unsigned int j=0;
-	unsigned char x,y;
-	
-	if(y1%8==0) y=y1/8;      
-	else y=y1/8+1;
-	for(y=y0;y<y1;y++)
-	{
-		LCD_Set_Pos(x0,y);				
-		for(x=x0;x<x1;x++)
-		{      
-			LCD_WrDat(BMP[j++]);	    	
-		}
-	}
-} 
+//void Draw_BMP(unsigned char x0,unsigned char y0,unsigned char x1,unsigned char y1,unsigned char BMP[])
+//{ 	
+//	unsigned int j=0;
+//	unsigned char x,y;
+//	
+//	if(y1%8==0) y=y1/8;      
+//	else y=y1/8+1;
+//	for(y=y0;y<y1;y++)
+//	{
+//		LCD_Set_Pos(x0,y);				
+//		for(x=x0;x<x1;x++)
+//		{      
+//			LCD_WrDat(BMP[j++]);	    	
+//		}
+//	}
+//} 
